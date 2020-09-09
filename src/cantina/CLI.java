@@ -33,6 +33,8 @@ public class CLI {
 			System.out.println("File not found");
 			System.exit(0);
 		}
+		
+		// Use Jackson to construct a tree of JsonNodes
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode jsonNode = null;
 		try {
@@ -41,11 +43,13 @@ public class CLI {
 			System.out.println("Unable to process file");
 			System.exit(0);			
 		}
-		System.out.printf("json: %s type=%s%n", jsonNode, jsonNode.getNodeType());
 
+		// As the JsonNode-based tree has a node for each line in the file, it does not reflect
+		// any semantics of the file, so construct a tree of UINodes which does add 
+		// some of those semantics.
 		UINode rootNode = new UINode("root", jsonNode);
-		System.out.println(rootNode.toString());
 
+		// Accept input from command line and traverse the UINode tree for matches. 
 		while (true) {
 			//Enter data using BufferReader 
 	        BufferedReader reader =  
@@ -56,7 +60,6 @@ public class CLI {
 			try {
 				selector = reader.readLine();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
 	        if (selector != null && selector.length() > 0) {
@@ -68,6 +71,8 @@ public class CLI {
 	}
 	
 	public static void find(UINode node, String selector) {
+		// Determine the selector type to avoid having to parse the selector.
+		// This will need changed to support chained or compound selectors. 
 		SelectorType selType = SelectorType.CLASS;
 		
 		if (selector.charAt(0) == '.') {
@@ -86,13 +91,17 @@ public class CLI {
 			System.out.println("No nodes found");
 		}
 		else {
+			System.out.println("Found " + matchingNodes.size() + " nodes:");
 			for (UINode n : matchingNodes) {
 				System.out.println(n);
+				System.out.println();
 			}
 		}
 	}
 	
 	public static void find(UINode node, String selector, SelectorType selType, List<UINode> matchingNodes) {
+		
+		// Does current node match, if so add to the list
 		switch(selType) {
 			case CLASS: {
 				if (node.getUiClass() != null && node.getUiClass().equals(selector)) {
@@ -114,6 +123,7 @@ public class CLI {
 			}
 		}
 
+		// If the node has children continue traversing
 		if (node.getChildren().size() > 0) {
 			for (UINode n : node.getChildren()) {
 				CLI.find(n, selector, selType, matchingNodes);

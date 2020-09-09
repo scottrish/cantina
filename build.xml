@@ -1,6 +1,5 @@
 <project name="Cantina" default="dist" basedir=".">
-	<description>
-    simple example build file
+  <description>
   </description>
 	<!-- set global properties for this build -->
 	<property name="src" location="src"/>

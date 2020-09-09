@@ -3,13 +3,14 @@
 Repo containing my solution to the Cantina coding problem.
 
 ## Setup
-Java
+Java 8
 
-Ant
+Apache Ant
 
 ## Usage
 ant build
 
+export CLASSPATH=lib/jackson-annotations-2.11.2.jar:lib/jackson-core-2.11.2.jar:lib/com.fasterxml.jackson.databind-2.10.3.LIFERAY-PATCHED-1.jar:dist/lib/Cantina.jar:data
 java -cp $CLASSPATH cantina.CLI
 
 The following selectors are supported:
@@ -19,9 +20,9 @@ The following selectors are supported:
 3. Identifier - prefix the search string with a hash, for example, #apply
 
 ## Compound Selectors
-Not yet supported
+Not yet implemented
 
 ## Chained Selectors
-Not yet supported
+Not yet implemented
 
 
