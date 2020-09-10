@@ -10,6 +10,11 @@ Apache Ant
 ## Usage
 ant build
 
+To run tests:
+ant junit
+
+To run command line:
+
 export CLASSPATH=lib/jackson-annotations-2.11.2.jar:lib/jackson-core-2.11.2.jar:lib/jackson-databind-2.11.2.jar:dist/lib/Cantina.jar
 
 java -cp $CLASSPATH cantina.CLI
@@ -21,9 +26,9 @@ The following selectors are supported:
 3. Identifier - prefix the search string with a hash, for example, #apply
 
 ## Compound Selectors
-Not yet implemented
+Example: Button#apply
 
 ## Chained Selectors
-Not yet implemented
+Example: StackView.container.accessoryView
 
 
