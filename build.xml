@@ -1,11 +1,14 @@
 <project name="Cantina" default="dist" basedir=".">
   <description>
+  	Build file for the Cantina challenge.
   </description>
 	<!-- set global properties for this build -->
 	<property name="src" location="src"/>
+	<property name="test.src" location="tests"/>
 	<property name="build" location="build"/>
 	<property name="dist" location="dist"/>
 	<property name="lib.dir" value="lib"/>
+	<property name="data.dir" value="data"/>
 
 	<path id="classpath">
 		<fileset dir="${lib.dir}" includes="**/*.jar"/>
@@ -24,7 +27,13 @@
 		<javac srcdir="${src}" destdir="${build}" classpathref="classpath"/>
 	</target>
 
-	<target name="dist" depends="compile"
+	<target name="compiletest" depends="init"
+        description="compile the source">
+		<!-- Compile the Java code from ${src} into ${build} -->
+		<javac srcdir="${test.src}" destdir="${build}" classpathref="classpath"/>
+	</target>
+
+		<target name="dist" depends="compile"
         description="generate the distribution">
 		<!-- Create the distribution directory -->
 		<mkdir dir="${dist}/lib"/>
@@ -40,6 +49,28 @@
 		</jar>
 	</target>
 
+	<target name="junit" depends="compile, compiletest">
+
+	    <junit printsummary="yes" haltonfailure="no">
+
+		<!-- Project classpath, must include junit.jar -->
+		<classpath refid="classpath" />
+
+		<!-- test class -->
+		<classpath>
+			<pathelement location="${build}" />
+			<pathelement location="${data.dir}" />
+		</classpath>
+
+		<test name="cantina.TestCLI"
+			haltonfailure="no" todir="${build}">
+			<formatter type="plain" />
+			<formatter type="xml" />
+		</test>
+
+	  </junit>
+	</target>
+	
 	<target name="clean"
         description="clean up">
 		<!-- Delete the ${build} and ${dist} directory trees -->
